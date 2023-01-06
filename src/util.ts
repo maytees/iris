@@ -33,6 +33,6 @@ export async function fileExists(file: string): Promise<boolean> {
   }
 }
 
-export async function getFileContent(filepath: string): Promise<string> {
-  return await Deno.readTextFile(filepath);
+export function getFileContent(filepath: string): string {
+  return Deno.readTextFileSync(filepath);
 }
