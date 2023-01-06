@@ -40,3 +40,7 @@ export function getFileContent(filepath: string): string {
 export function isWhitespace(char: string): boolean{
   return (!char || char.trim() === "");
 }
+
+export function isLetter(char: string): boolean {
+  return char.toLowerCase() != char.toUpperCase();
+}
