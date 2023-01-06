@@ -5,7 +5,7 @@ if (import.meta.main) {
   const run = new Command()
     .description("Execute an Iris file.")
     .arguments("<file:string>")
-    .action(async (_options: any, file: string) => {
+    .action(async (_options, file: string) => {
       // Get the file to run
       if (await fileExists(file)) {
         LOG("Found source file: " + file);
@@ -14,7 +14,7 @@ if (import.meta.main) {
       }
     });
 
-  const { args } = await new Command()
+  await new Command()
     .name("iris")
     .description(`
       Iris is a small scripting language meant to be used for completing simple tasks which do not

@@ -5,8 +5,6 @@ import {
   isLetter,
   isNumeric,
   isWhitespace,
-  LOG,
-  WARN,
 } from "../util.ts";
 
 const KEYWORDS = [
@@ -68,7 +66,7 @@ export class Lexer {
         continue;
       }
 
-      let singleCharToken: Token = this.lexSingle();
+      const singleCharToken: Token = this.lexSingle();
       if (singleCharToken.type != TokenType.TTNone) {
         this.tokens.push(singleCharToken);
         continue;
