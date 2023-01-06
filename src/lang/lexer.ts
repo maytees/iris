@@ -3,6 +3,7 @@ import {
   ERR,
   getFileContent,
   isLetter,
+  isNumeric,
   isWhitespace,
   LOG,
   WARN,
@@ -14,6 +15,7 @@ const KEYWORDS = [
   "return",
   "func",
   "int",
+  "float",
   "string",
   "if",
   "else",
@@ -73,6 +75,7 @@ export class Lexer {
 
   private lexString(): Token {
     const strval = "";
+
     while (this.current != '"') {
       strval.concat(this.current);
       this.advance();
@@ -83,19 +86,41 @@ export class Lexer {
 
   private lexIden(): Token {
     const idenval = "";
-    while(isLetter(this.current)) {
-        idenval.concat(this.current);
-        this.advance();
+
+    while (isLetter(this.current)) {
+      idenval.concat(this.current);
+      this.advance();
     }
 
     if (KEYWORDS.includes(idenval)) {
-        return new Token(TokenType.TTKeyword, idenval);
+      return new Token(TokenType.TTKeyword, idenval);
     }
 
     return new Token(TokenType.TTIden, idenval);
   }
 
   private lexNum(): Token {
+    const numvalue = "";
+    let dotcount = 0;
+
+    while (isNumeric(this.current) || this.current === ".") {
+      if (this.current === ".") {
+        dotcount++;
+        numvalue.concat(".");
+        this.advance();
+        continue;
+      }
+
+      if (dotcount >= 1) throw new Error();
+
+      numvalue.concat(this.current);
+      this.advance();
+      continue;
+    }
+
+    if (dotcount == 1) return new Token(TokenType.TTFloat, numvalue);
+
+    return new Token(TokenType.TTInt, numvalue);
   }
 
   /*

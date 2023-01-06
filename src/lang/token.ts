@@ -1,7 +1,8 @@
 export enum TokenType {
   TTNone,
   TTString,
-  TTNumber,
+  TTFloat,
+  TTInt,
   TTIden,
   TTKeyword,
   TTLparen,
