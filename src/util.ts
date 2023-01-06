@@ -37,7 +37,7 @@ export function getFileContent(filepath: string): string {
   return Deno.readTextFileSync(filepath);
 }
 
-export function isWhitespace(char: string): boolean{
+export function isWhitespace(char: string): boolean {
   return (!char || char.trim() === "");
 }
 
