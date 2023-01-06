@@ -38,5 +38,5 @@ export function getFileContent(filepath: string): string {
 }
 
 export function isWhitespace(char: string): boolean{
-  return (!char || TextDecoder.trim() === "");
+  return (!char || char.trim() === "");
 }
