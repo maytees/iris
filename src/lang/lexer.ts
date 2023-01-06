@@ -61,6 +61,20 @@ export class Lexer {
         this.advance();
         continue;
       }
+
+      if (isNumeric(this.current)) {
+        this.tokens.push(this.lexNum());
+        this.advance();
+        continue;
+      }
+
+      let singleCharToken: Token = this.lexSingle();
+      if (singleCharToken.type != TokenType.TTNone) {
+        this.tokens.push(singleCharToken);
+        continue;
+      }
+
+      ERR("Cannot resolve char: " + this.current);
     }
 
     return this.tokens;
@@ -71,6 +85,18 @@ export class Lexer {
       this.index++;
       this.current = this.source[this.index];
     }
+  }
+
+  /*
+    Peek nth characters ahead of the current char.
+    If nth is not specified, return next char
+  */
+  private peek(nth?: number): string {
+    if (nth !== undefined) {
+      return this.source[this.index + nth];
+    }
+
+    return this.source[this.index + 1];
   }
 
   private lexString(): Token {
@@ -123,15 +149,43 @@ export class Lexer {
     return new Token(TokenType.TTInt, numvalue);
   }
 
-  /*
-    Peek nth characters ahead of the current char.
-    If nth is not specified, return next char
-  */
-  private peek(nth?: number): string {
-    if (nth !== undefined) {
-      return this.source[this.index + nth];
+  private lexSingle(): Token {
+    switch (this.current) {
+      case "(": {
+        this.advance();
+        return new Token(TokenType.TTLparen, "(");
+      }
+      case ")": {
+        this.advance();
+        return new Token(TokenType.TTRparen, ")");
+      }
+      case "=": {
+        this.advance();
+        return new Token(TokenType.TTEq, "=");
+      }
+      case "+": {
+        this.advance();
+        return new Token(TokenType.TTAdd, "+");
+      }
+      case "-": {
+        this.advance();
+        return new Token(TokenType.TTSub, "-");
+      }
+      case "/": {
+        this.advance();
+        return new Token(TokenType.TTDiv, "/");
+      }
+      case "*": {
+        this.advance();
+        return new Token(TokenType.TTMul, "*");
+      }
+      case ";": {
+        this.advance();
+        return new Token(TokenType.TTSemi, ";");
+      }
+      default: {
+        return new Token(TokenType.TTNone, "");
+      }
     }
-
-    return this.source[this.index + 1];
   }
 }
