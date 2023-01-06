@@ -36,3 +36,7 @@ export async function fileExists(file: string): Promise<boolean> {
 export function getFileContent(filepath: string): string {
   return Deno.readTextFileSync(filepath);
 }
+
+export function isWhitespace(char: string): boolean{
+  return (!char || TextDecoder.trim() === "");
+}
