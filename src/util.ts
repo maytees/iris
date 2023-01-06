@@ -44,3 +44,7 @@ export function isWhitespace(char: string): boolean{
 export function isLetter(char: string): boolean {
   return char.toLowerCase() != char.toUpperCase();
 }
+
+export function isNumeric(char: string): boolean {
+  return /^\d+$/.test(char);
+}
