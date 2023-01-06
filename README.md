@@ -15,8 +15,12 @@ like filesystem automation, and other **_small_** things.
 
 ***Dev***
 
-`deno run -A ./src/iris.ts run ./hello-world.iris`
+```bash
+deno run -A ./src/iris.ts run ./hello-world.iris
+```
 
 ***Prod binary***
 
-`iris run ./hello-world.iris`
+```bash
+iris run ./hello-world.iris
+```
