@@ -1,17 +1,24 @@
 import { Token, TokenType } from "./token.ts";
-import { ERR, getFileContent, isWhitespace, LOG, WARN, isLetter } from "../util.ts";
+import {
+  ERR,
+  getFileContent,
+  isLetter,
+  isWhitespace,
+  LOG,
+  WARN,
+} from "../util.ts";
 
 const KEYWORDS = [
-    "var",
-    "const",
-    "return",
-    "func",
-    "int",
-    "string",
-    "if",
-    "else",
-    "for",
-]
+  "var",
+  "const",
+  "return",
+  "func",
+  "int",
+  "string",
+  "if",
+  "else",
+  "for",
+];
 
 export class Lexer {
   public current = "";
@@ -39,7 +46,7 @@ export class Lexer {
         this.advance();
         continue;
       }
-    
+
       // Check for string lit
       if (this.current === '"') {
         this.tokens.push(this.lexString());
@@ -47,7 +54,7 @@ export class Lexer {
         continue;
       }
 
-      if(isLetter(this.current)) {
+      if (isLetter(this.current)) {
         this.tokens.push(this.lexIden());
         this.advance();
         continue;
@@ -65,9 +72,27 @@ export class Lexer {
   }
 
   private lexString(): Token {
+    const strval = "";
+    while (this.current != '"') {
+      strval.concat(this.current);
+      this.advance();
+    }
+
+    return new Token(TokenType.TTString, strval);
   }
 
   private lexIden(): Token {
+    const idenval = "";
+    while(isLetter(this.current)) {
+        idenval.concat(this.current);
+        this.advance();
+    }
+
+    if (KEYWORDS.includes(idenval)) {
+        return new Token(TokenType.TTKeyword, idenval);
+    }
+
+    return new Token(TokenType.TTIden, idenval);
   }
 
   private lexNum(): Token {
