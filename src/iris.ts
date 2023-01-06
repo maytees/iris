@@ -1,10 +1,28 @@
-import { fs } from "./deps.ts";
+import { Command } from "./deps.ts";
+import { ERR, fileExists, LOG } from "./util.ts";
 
-const main= (): void => {
-  
-}
-
-// Learn more at https://deno.land/manual/examples/module_metadata#concepts
 if (import.meta.main) {
-  main();
+  const run = new Command()
+    .description("Execute an Iris file.")
+    .arguments("<file:string>")
+    .action(async (_options: any, file: string) => {
+      // Get the file to run
+      if (await fileExists(file)) {
+        console.log("not joe");
+        LOG("Found source file: " + file);
+      } else {
+        console.log("joe joe");
+        ERR("Could not find file: " + file);
+      }
+    });
+
+  const { args } = await new Command()
+    .name("iris")
+    .description(`
+      Iris is a small scripting language meant to be used for completing simple tasks which do not
+      require large languages to finish.
+    `)
+    .version("v0.0.1")
+    .command("run", run)
+    .parse(Deno.args);
 }
