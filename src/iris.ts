@@ -8,10 +8,8 @@ if (import.meta.main) {
     .action(async (_options: any, file: string) => {
       // Get the file to run
       if (await fileExists(file)) {
-        console.log("not joe");
         LOG("Found source file: " + file);
       } else {
-        console.log("joe joe");
         ERR("Could not find file: " + file);
       }
     });

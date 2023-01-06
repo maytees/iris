@@ -22,12 +22,13 @@ export function ERR(message: string): void {
 
 export async function fileExists(file: string): Promise<boolean> {
   try {
-    await Deno.remove(file);
+    await Deno.stat(file);
+    return true;
   } catch (error) {
     if (!(error instanceof Deno.errors.NotFound)) {
       return false;
+    } else {
+      return false;
     }
   }
-
-  return true;
 }
