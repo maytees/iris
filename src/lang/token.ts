@@ -13,14 +13,22 @@ export enum TokenType {
   TTDiv,
   TTMul,
   TTSemi,
+  TTRBrace,
+  TTLBrace,
+  TTGreaterthan,
+  TTLessthan,
+  TTRBrack,
+  TTLBrack,
 }
 
 export class Token {
   public type: TokenType = TokenType.TTNone;
+  public strType: string = "";
   public value = "";
 
-  public constructor(type: TokenType, value: string) {
+  public constructor(type: TokenType, value?: string) {
     this.type = type;
-    this.value = value;
+    value == undefined ? value = "" : this.value = value;
+    this.strType = TokenType[this.type];
   }
 }

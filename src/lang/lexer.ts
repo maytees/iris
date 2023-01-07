@@ -5,6 +5,7 @@ import {
   isLetter,
   isNumeric,
   isWhitespace,
+  LOG,
 } from "../util.ts";
 
 const KEYWORDS = [
@@ -23,20 +24,29 @@ const KEYWORDS = [
 export class Lexer {
   public current = "";
   public source = "";
-  public index = 1;
+  public index = 0;
 
   public tokens: Token[] = [];
 
   public constructor(source: string) {
     this.source = getFileContent(source);
-    this.index = 1;
-    this.current = this.source[this.index];
+    this.index = 0;
+    this.current = this.source[0];
   }
 
   public lex(): Token[] {
-    while (this.current != "\0") {
+    LOG("Running lexer...");
+
+    while (this.index != this.source.length) {
       // Skip comments
-      if (this.current === "/" && this.peek() === "/") {
+      if (this.source.substring(this.index, this.index + 2) === "//") {
+        // Linter shows an error saying comparison is unintentional, though it works.
+        // deno-lint-ignore ban-ts-comment
+        // @ts-ignore
+        while (this.current !== "\n") {
+          this.advance();
+        }
+
         this.advance();
         continue;
       }
@@ -49,6 +59,7 @@ export class Lexer {
 
       // Check for string lit
       if (this.current === '"') {
+        this.advance();
         this.tokens.push(this.lexString());
         this.advance();
         continue;
@@ -72,14 +83,15 @@ export class Lexer {
         continue;
       }
 
-      ERR("Cannot resolve char: " + this.current);
+      ERR("Cannot resolve char: " + this.current + "  idx: " + this.index);
+      this.advance();
     }
 
     return this.tokens;
   }
 
   private advance() {
-    if (this.source.length > this.index) {
+    if (this.source.length >= this.index) {
       this.index++;
       this.current = this.source[this.index];
     }
@@ -98,10 +110,10 @@ export class Lexer {
   }
 
   private lexString(): Token {
-    const strval = "";
+    let strval = "";
 
     while (this.current != '"') {
-      strval.concat(this.current);
+      strval += this.current;
       this.advance();
     }
 
@@ -109,10 +121,10 @@ export class Lexer {
   }
 
   private lexIden(): Token {
-    const idenval = "";
+    let idenval = "";
 
     while (isLetter(this.current)) {
-      idenval.concat(this.current);
+      idenval += this.current;
       this.advance();
     }
 
@@ -124,20 +136,23 @@ export class Lexer {
   }
 
   private lexNum(): Token {
-    const numvalue = "";
+    let numvalue = "";
     let dotcount = 0;
 
     while (isNumeric(this.current) || this.current === ".") {
       if (this.current === ".") {
         dotcount++;
-        numvalue.concat(".");
+        numvalue += ".";
         this.advance();
         continue;
       }
 
-      if (dotcount >= 1) throw new Error();
+      if (dotcount > 1) {
+        ERR("Too many dots!");
+        Deno.exit(1);
+      }
 
-      numvalue.concat(this.current);
+      numvalue += this.current;
       this.advance();
       continue;
     }
@@ -181,8 +196,32 @@ export class Lexer {
         this.advance();
         return new Token(TokenType.TTSemi, ";");
       }
+      case "{": {
+        this.advance();
+        return new Token(TokenType.TTLBrace, "{");
+      }
+      case "}": {
+        this.advance();
+        return new Token(TokenType.TTRBrace, "}");
+      }
+      case "[": {
+        this.advance();
+        return new Token(TokenType.TTLBrack, "[");
+      }
+      case "]": {
+        this.advance();
+        return new Token(TokenType.TTRBrack, "]");
+      }
+      case ">": {
+        this.advance();
+        return new Token(TokenType.TTGreaterthan, ">");
+      }
+      case "<": {
+        this.advance();
+        return new Token(TokenType.TTLessthan, "<");
+      }
       default: {
-        return new Token(TokenType.TTNone, "");
+        return new Token(TokenType.TTNone);
       }
     }
   }
