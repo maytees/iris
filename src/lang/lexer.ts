@@ -31,7 +31,7 @@ export class Lexer {
   public constructor(source: string) {
     this.source = getFileContent(source);
     this.index = 0;
-    this.current = this.source[0];
+    this.current = this.source[this.index];
   }
 
   public lex(): Token[] {
@@ -67,19 +67,18 @@ export class Lexer {
 
       if (isLetter(this.current)) {
         this.tokens.push(this.lexIden());
-        this.advance();
         continue;
       }
 
       if (isNumeric(this.current)) {
         this.tokens.push(this.lexNum());
-        this.advance();
         continue;
       }
 
       const singleCharToken: Token = this.lexSingle();
       if (singleCharToken.type != TokenType.TTNone) {
         this.tokens.push(singleCharToken);
+        this.advance();
         continue;
       }
 

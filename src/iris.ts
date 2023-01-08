@@ -1,13 +1,20 @@
 import { Command } from "./deps.ts";
 import { ERR, fileExists, LOG } from "./util.ts";
 import { Lexer } from "./lang/lexer.ts";
+import { Parser } from "./lang/parser.ts";
+import { ASTNode } from "./lang/ast.ts";
 
 function start(source: string) {
   const lexer: Lexer = new Lexer(source);
   lexer.lex();
-  lexer.tokens.forEach((token) => {
-    console.log("Token: Val: " + token.value + "    Type: ", token.strType);
-  });
+  // lexer.tokens.forEach((token) => {
+  //   console.log("Token: Val: " + token.value + "    Type: ", token.strType);
+  // });
+
+  const parser: Parser = new Parser(lexer.tokens);
+  const ast: ASTNode[] = parser.genAst();
+
+  // console.log(ast);
 }
 
 if (import.meta.main) {

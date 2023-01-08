@@ -21,14 +21,26 @@ export enum TokenType {
   TTLBrack,
 }
 
+export enum TokenFamily {
+  Op,
+}
+
 export class Token {
   public type: TokenType = TokenType.TTNone;
-  public strType: string = "";
+  public strType = "";
   public value = "";
+  public family: TokenFamily | null = null;
 
   public constructor(type: TokenType, value?: string) {
     this.type = type;
     value == undefined ? value = "" : this.value = value;
     this.strType = TokenType[this.type];
+
+    if (
+      this.strType === "TTAdd" || this.strType === "TTMul" ||
+      this.strType === "TTDiv" || this.strType === "TTSub"
+    ) {
+      this.family = TokenFamily.Op;
+    }
   }
 }
