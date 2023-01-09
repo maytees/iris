@@ -11,25 +11,29 @@ things.
 ## Task commands
 
 - `task compile`
-    - This command will compile iris into a ./build/ directory
+  - This command will compile iris into a ./build/ directory
 - `task clean`
-    - Clean will clean up the iris source file directory, removing build, .vscode, and deno.lock    
+  - Clean will clean up the iris source file directory, removing build, .vscode,
+    and deno.lock
 - `task run`
-    - Run will compile iris and run a file of your choice
+  - Run will compile iris and run a file of your choice
 
-***How to run a file with iris run?***
+_**How to run a file with iris run?**_
+
 ```bash
 task run -- ./path/to/file.iris
 ```
 
 As stated above, this will compile iris and run an iris file.
 
-***How to run an iris file without task?***
+_**How to run an iris file without task?**_
+
 ```bash
 deno run -A ./src/main.ts run ./path/to/file.iris
 ```
 
-***How to compie iris?***
+_**How to compie iris?**_
+
 ```bash
 deno compile -A -o ./build/iris ./src/main.ts
 ```
