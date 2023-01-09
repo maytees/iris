@@ -8,6 +8,13 @@ things.
 
 <img src="./example.png" alt="syntax" width="600" />
 
+## Prerequisites
+
+The only dependencies that iris needs for compilation are:
+
+- Deno
+- Taskfile (make alternative; you don't 100% need it)
+
 ## Task commands
 
 - `task compile`
@@ -26,13 +33,13 @@ task run -- ./path/to/file.iris
 
 As stated above, this will compile iris and run an iris file.
 
-_**How to run an iris file without task?**_
+_**How to run an iris file without taskfile?**_
 
 ```bash
 deno run -A ./src/main.ts run ./path/to/file.iris
 ```
 
-_**How to compie iris?**_
+_**How to compie iris without taskfile?**_
 
 ```bash
 deno compile -A -o ./build/iris ./src/main.ts
