@@ -14,7 +14,7 @@ function start(source: string) {
   const parser: Parser = new Parser(lexer.tokens);
   const ast: ASTNode[] = parser.genAst();
 
-  // console.log(ast);
+  console.log(ast);
 }
 
 if (import.meta.main) {

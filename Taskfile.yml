@@ -1,0 +1,17 @@
+version: "3"
+
+tasks: 
+  build:
+    desc: Create the iris bin file in ./build/
+    cmds:
+      - deno compile -A -o ./build/iris ./src/iris.ts
+  clean:
+    desc: Remove excess files
+    cmds:
+      - rm -rf ./build ./deno.lock ./.vscode 
+  run:
+    desc: Compile and run an iris file.
+    cmds:
+      - task: build
+      - echo "Built iris"
+      - deno run -A ./src/iris.ts run {{ .CLI_ARGS }}
