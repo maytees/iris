@@ -8,22 +8,28 @@ things.
 
 <img src="./example.png" alt="syntax" width="600" />
 
-### How to use?
+## Task commands
 
-_**Note:**_ **The commands below are not implemented yet, this is just for
-future reference**
+- `task compile`
+    - This command will compile iris into a ./build/ directory
+- `task clean`
+    - Clean will clean up the iris source file directory, removing build, .vscode, and deno.lock    
+- `task run`
+    - Run will compile iris and run a file of your choice
 
-_To run an Iris file, you will use the `run` command which takes in a file as an
-arugment, here is an example:_
-
-_**Dev**_
-
+***How to run a file with iris run?***
 ```bash
-deno run -A ./src/iris.ts run ./hello-world.iris
+task run -- ./path/to/file.iris
 ```
 
-_**Prod binary**_
+As stated above, this will compile iris and run an iris file.
 
+***How to run an iris file without task?***
 ```bash
-iris run ./hello-world.iris
+deno run -A ./src/main.ts run ./path/to/file.iris
+```
+
+***How to compie iris?***
+```bash
+deno compile -A -o ./build/iris ./src/main.ts
 ```
